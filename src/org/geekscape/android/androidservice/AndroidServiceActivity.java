@@ -2,17 +2,20 @@ package org.geekscape.android.androidservice;
 
 import org.geekscape.android.androidservice.R;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 public class AndroidServiceActivity extends Activity {
-  public static String DEBUG_TAG = "AndroidService";
+  public static String LOG_TAG = AndroidServiceActivity.class.getSimpleName();
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        Log.i(DEBUG_TAG, "Log() test");
-    }
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    Log.i(LOG_TAG, "onCreate()");
+    setContentView(R.layout.main);
+
+    startService(new Intent(AndroidService.class.getName()));
+  }
 }

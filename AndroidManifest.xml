@@ -13,5 +13,12 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".AndroidService"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="org.geekscape.android.androidservice.AndroidService" />
+            </intent-filter>
+        </service>
     </application>
 </manifest>
