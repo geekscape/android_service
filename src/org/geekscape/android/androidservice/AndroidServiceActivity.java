@@ -17,7 +17,7 @@ public class AndroidServiceActivity extends Activity {
     Bundle savedInstanceState) {
   
     super.onCreate(savedInstanceState);
-    Log.i(LOG_TAG, "onCreate()");
+    Log.d(LOG_TAG, "onCreate()");
     setContentView(R.layout.main);
 
     startService(new Intent(AndroidService.class.getName()));

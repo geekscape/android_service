@@ -27,7 +27,7 @@ public class AndroidService extends Service {
   private TimerTask timerTask = new TimerTask() {
     @Override
     public void run() {
-      Log.i(LOG_TAG, "timerTask.run()");
+      Log.d(LOG_TAG, "timerTask.run()");
 
       try {
         Message newMessage = new Message("topic", "payload_" + (counter ++));
@@ -42,7 +42,7 @@ public class AndroidService extends Service {
               messageListener.handleMessage();
             }
             catch (RemoteException remoteException) {
-              Log.i(LOG_TAG, "Failed to notify message listener " + messageListener);
+              Log.w(LOG_TAG, "Failed to notify message listener " + messageListener);
 
               apiEndpoint.removeListener(messageListener);
             }
@@ -50,7 +50,7 @@ public class AndroidService extends Service {
         }
       }
       catch (Throwable throwable) {
-        Log.i(LOG_TAG, "Failed to generate new message", throwable);
+        Log.e(LOG_TAG, "Failed to generate new message", throwable);
       }
     }
   };
@@ -88,7 +88,7 @@ public class AndroidService extends Service {
     Intent intent) {
 
     if (AndroidService.class.getName().equals(intent.getAction())) {
-      Log.i(LOG_TAG, "onBind(intent): " + intent);
+      Log.d(LOG_TAG, "onBind(intent): " + intent);
       return(apiEndpoint);
     }
     else {
@@ -99,7 +99,7 @@ public class AndroidService extends Service {
   @Override
   public void onCreate() {
     super.onCreate();
-    Log.i(LOG_TAG, "onCreate()");
+    Log.d(LOG_TAG, "onCreate()");
 
     timer = new Timer("timerTask");
     timer.schedule(timerTask, 1000L, 5 * 1000L);
@@ -108,7 +108,7 @@ public class AndroidService extends Service {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    Log.i(LOG_TAG, "onDestroy()");
+    Log.d(LOG_TAG, "onDestroy()");
 
     timer.cancel();
     timer = null;
