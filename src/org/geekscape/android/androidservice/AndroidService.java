@@ -36,6 +36,7 @@ public class AndroidService extends Service {
           transmitMessage = newMessage;
         }
 
+        // TODO: Replace with Producer/Consumer semaphore
         synchronized (receiveMessageQueue) {
           while (receiveMessageQueue.isEmpty() == false) {
             Message message = receiveMessageQueue.get(0);
