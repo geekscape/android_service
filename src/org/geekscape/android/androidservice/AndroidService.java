@@ -14,11 +14,11 @@ public class AndroidService extends Service {
 
   public static final String LOG_TAG = AndroidService.class.getSimpleName();
 
-  private Message message = new Message("", "");
-
-  private final Object messageLock = new Object();
-
   private List<MessageListener> messageListeners = new ArrayList<MessageListener>();
+
+  private Message transmitMessage = new Message("", "");
+
+  private List<Message> receiveMessageQueue = new ArrayList<Message>();
 
   private Timer timer;
 
@@ -30,10 +30,19 @@ public class AndroidService extends Service {
       Log.d(LOG_TAG, "timerTask.run()");
 
       try {
-        Message newMessage = new Message("topic", "payload_" + (counter ++));
+        Message newMessage = new Message("topic", "(counter " + (counter ++) + ")");
 
-        synchronized (messageLock) {
-          message = newMessage;
+        synchronized (transmitMessage) {
+          transmitMessage = newMessage;
+        }
+
+        synchronized (receiveMessageQueue) {
+          while (receiveMessageQueue.isEmpty() == false) {
+            Message message = receiveMessageQueue.get(0);
+            receiveMessageQueue.remove(0);
+            String output = message.getTopic() + ", " + message.getPayload();
+            Log.d(LOG_TAG, "Message: " + output);
+          }
         }
 
         synchronized (messageListeners) {
@@ -42,7 +51,7 @@ public class AndroidService extends Service {
               messageListener.handleMessage();
             }
             catch (RemoteException remoteException) {
-              Log.w(LOG_TAG, "Failed to notify message listener " + messageListener);
+              Log.w(LOG_TAG, "Failed to notify transmitMessage listener " + messageListener);
 
               apiEndpoint.removeListener(messageListener);
             }
@@ -50,7 +59,7 @@ public class AndroidService extends Service {
         }
       }
       catch (Throwable throwable) {
-        Log.e(LOG_TAG, "Failed to generate new message", throwable);
+        Log.e(LOG_TAG, "Failed to generate new transmitMessage", throwable);
       }
     }
   };
@@ -59,8 +68,16 @@ public class AndroidService extends Service {
     public Message getMessage()
       throws RemoteException {
 
-      synchronized (messageLock) {
-        return(message);
+      synchronized (transmitMessage) {
+        return(transmitMessage);
+      }
+    }
+
+    public void sendMessage(
+      Message message) {
+
+      synchronized (receiveMessageQueue) {
+        receiveMessageQueue.add(message);
       }
     }
 
