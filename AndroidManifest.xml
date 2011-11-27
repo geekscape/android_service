@@ -1,36 +1,65 @@
+<!--
+  -- Please do not remove the following notices.
+  -- Copyright (c) 2011 by Geekscape Pty. Ltd.
+  -- License: AGPLv3 http://geekscape.org/static/aiko_license.html
+  --> 
+
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="org.geekscape.android.androidservice"
-      android:versionCode="1"
-      android:versionName="1.0">
+  package="org.geekscape.android.androidservice"
+  android:versionCode="1"
+  android:versionName="1.0">
 
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name="org.geekscape.android.androidservice.AndroidServiceActivity"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+  <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="13" />
 
-        <service
-            android:name=".AndroidService">
-<!--        android:process=":remote">  -->
-            
-            <intent-filter>
-                <action android:name="org.geekscape.android.androidservice.AndroidService" />
-            </intent-filter>
-        </service>
-<!--
-        <receiver
-            android:name=".BootReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
+  <application android:icon="@drawable/icon"
+    android:label="@string/app_name"
+    android:theme="@android:style/Theme.NoTitleBar">
+
+    <uses-library android:name="com.android.future.usb.accessory" />
+  
+    <activity android:name="org.geekscape.android.androidservice.AndroidServiceActivity"
+      android:label="@string/app_name">
+
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
+    </activity>
+
+    <activity android:name="org.geekscape.android.androidservice.UsbAccessoryActivity"
+      android:label="TinyAccessory"
+      android:taskAffinity=""
+      android:launchMode="singleInstance">
+
+<!--  android:label="@string/app_name"
   -->
-    </application>
+
+      <intent-filter>
+        <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
+      </intent-filter>
+
+      <meta-data android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
+        android:resource="@xml/accessory_filter" />
+    </activity>
+
+    <service
+      android:name=".AndroidService">
+<!--  android:process=":remote">  -->
+            
+      <intent-filter>
+        <action android:name="org.geekscape.android.androidservice.AndroidService" />
+      </intent-filter>
+    </service>
 <!--
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <receiver android:name=".BootReceiver">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+      </intent-filter>
+    </receiver>
+  -->
+  </application>
+<!--
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   -->
 </manifest>
