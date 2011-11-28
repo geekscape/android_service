@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical">
+
+  <TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
+    android:text="@string/title"
+    android:textSize="20dip"/>
+
+  <CheckBox
+    android:id="@+id/serviceRunning"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Service running">
+  </CheckBox>
+
+  <LinearLayout
+    android:id="@+id/linearLayout"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+
+    <EditText
+      android:id="@+id/taskRate"
+      android:inputType="number"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content">
+    </EditText>
+
+    <TextView
+      android:id="@+id/taskRateLabel"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:text="Task rate (seconds)"
+      android:textSize="20dip"
+      android:layout_weight="4.08">
+    </TextView>
+  </LinearLayout>
 </LinearLayout>

@@ -124,9 +124,24 @@ public class AndroidService extends Service {
   public void onCreate() {
     super.onCreate();
     Log.d(LOG_TAG, "onCreate()");
+  }
 
-    timer = new Timer("timerTask");
-    timer.schedule(timerTask, 1000L, 5 * 1000L);
+  @Override
+  public int onStartCommand(
+    Intent serviceIntent,
+    int    flags,
+    int    startId) {
+
+    int taskRate = serviceIntent.getIntExtra("taskRate", 5);
+
+    Log.d(LOG_TAG, "onStartComamnd(): taskRate: " + taskRate);
+
+    if (timer == null) {
+      timer = new Timer("timerTask");
+      timer.schedule(timerTask, 1000L, taskRate * 1000L);
+    }
+
+    return(START_STICKY);
   }
 
   @Override
